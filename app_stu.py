@@ -93,19 +93,19 @@ goals = load_goals(user_uuid)
 with st.form("goal_form"):
     st.subheader("1. 身体・心理面の理想")
     st.caption("例：週に1回は運動し、健康的な生活習慣を続けている。柔軟な考えを持ち、人に優しく接することができる。")
-    goals["body_mind"] = st.text_area(value=goals.get("body_mind", ""), key="body_mind", height=150)
+    goals["body_mind"] = st.text_area("", value=goals.get("body_mind", ""), key="body_mind", height=150)
 
     st.subheader("2. 学業・仕事の理想")
     st.caption("例：統計学をマスターし、どんな解析でも自信を持ってできるようになっている。丁寧で正確に仕事をこなし、周囲から頼られる先輩である。")
-    goals["career"] = st.text_area(value=goals.get("career", ""), key="career", height=150)
+    goals["career"] = st.text_area("", value=goals.get("career", ""), key="career", height=150)
 
     st.subheader("3. 人間関係の理想")
     st.caption("例：信頼できるパートナーと暮らし、両親ともたまに会って良好な関係を築いている。何らかのコミュニティに参加し、常に新しい人との出会いがある。")
-    goals["relationships"] = st.text_area(value=goals.get("relationships", ""), key="relationships", height=150)
+    goals["relationships"] = st.text_area("", value=goals.get("relationships", ""), key="relationships", height=150)
 
     st.subheader("4. その他の理想")
     st.caption("例：趣味のバンド活動を続け、たまにライブを開催している。料理が上手で、家族に美味しいご飯を作っている。")
-    goals["others"] = st.text_area(value=goals.get("others", ""), key="others",height=150)
+    goals["others"] = st.text_area("", value=goals.get("others", ""), key="others",height=150)
     if st.form_submit_button("目標を保存する"):
         save_goals(user_uuid, nickname, goals)
         st.success("✅ 目標を保存しました！")
