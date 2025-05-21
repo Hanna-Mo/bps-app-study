@@ -19,37 +19,37 @@ client = OpenAI(
 )
 
 # -------------------- ユーザー識別（ニックネーム→UUID） --------------------
-def get_or_create_user_id(nickname):
-    response = supabase.table("user_profiles").select("user_id").eq("nickname", nickname).execute()
+def get_or_create_user_uuid(nickname):
+    response = supabase.table("user_profiles").select("user_uuid").eq("nickname", nickname).execute()
     if response.data:
-        return response.data[0]["user_id"]
+        return response.data[0]["user_uuid"]
 
     new_id = str(uuid.uuid4())
-    supabase.table("user_profiles").insert({"nickname": nickname, "user_id": new_id}).execute()
+    supabase.table("user_profiles").insert({"nickname": nickname, "user_uuid": new_id}).execute()
     return new_id
 
 # -------------------- 目標の読み書き --------------------
-def load_goals(user_id):
-    response = supabase.table("goals").select("body_mind", "career", "relationships", "others").eq("user_id", user_id).execute()
+def load_goals(user_uuid):
+    response = supabase.table("goals").select("body_mind", "career", "relationships", "others").eq("user_uuid", user_uuid).execute()
     if response.data:
         return response.data[0]
     return {"body_mind": "", "career": "", "relationships": "", "others": ""}
 
-def save_goals(user_id, nickname, goals):
-    data = {"user_id": user_id, "nickname": nickname, **goals}
-    existing = supabase.table("goals").select("id").eq("user_id", user_id).execute()
+def save_goals(user_uuid, nickname, goals):
+    data = {"user_uuid": user_uuid, "nickname": nickname, **goals}
+    existing = supabase.table("goals").select("id").eq("user_uuid", user_uuid).execute()
     if existing.data:
-        supabase.table("goals").update(data).eq("user_id", user_id).execute()
+        supabase.table("goals").update(data).eq("user_uuid", user_uuid).execute()
     else:
         supabase.table("goals").insert(data).execute()
 
 # -------------------- ログの保存と取得 --------------------
-def save_log(user_id, nickname, date, entry):
-    data = {"user_id": user_id, "nickname": nickname, "date": date, "entry": entry}
+def save_log(user_uuid, nickname, date, entry):
+    data = {"user_uuid": user_uuid, "nickname": nickname, "date": date, "entry": entry}
     supabase.table("logs").insert(data).execute()
 
-def load_logs(user_id):
-    response = supabase.table("logs").select("date", "entry").eq("user_id", user_id).order("date", desc=True).limit(5).execute()
+def load_logs(user_uuid):
+    response = supabase.table("logs").select("date", "entry").eq("user_uuid", user_uuid).order("date", desc=True).limit(5).execute()
     return response.data if response.data else []
 
 # -------------------- GPT応答生成 --------------------
@@ -84,11 +84,11 @@ nickname = st.text_input("あなたに割り当てられたIDを入力してく�
 if not nickname:
     st.stop()
 
-user_id = get_or_create_user_id(nickname)
+user_uuid = get_or_create_user_uuid(nickname)
 
 # --- 目標入力 ---
 st.header("🎯 将来の目標")
-goals = load_goals(user_id)
+goals = load_goals(user_uuid)
 
 with st.form("goal_form"):
     st.subheader("1. 身体・心理面の理想")
@@ -107,7 +107,7 @@ with st.form("goal_form"):
     st.caption("例：趣味のバンド活動を続け、たまにライブを開催している。料理が上手で、家族に美味しいご飯を作っている。")
     goals["others"] = st.text_area(value=goals.get("others", ""), key="others",height=150)
     if st.form_submit_button("目標を保存する"):
-        save_goals(user_id, nickname, goals)
+        save_goals(user_uuid, nickname, goals)
         st.success("✅ 目標を保存しました！")
 
 # --- ポジティブ出来事記録 ---
@@ -121,7 +121,7 @@ with st.form("log_form"):
     submitted = st.form_submit_button("記録する")
 
     if submitted and entry.strip():
-        save_log(user_id, nickname, today, entry)
+        save_log(user_uuid, nickname, today, entry)
         gpt_reply = get_gpt_reply(entry, goals)  # ← GPT応答関数を呼ぶ
         st.session_state["gpt_reply"] = gpt_reply
         st.session_state["show_summary"] = True
@@ -144,7 +144,7 @@ if st.session_state.get("show_records"):
     st.markdown(f"- その他：{goals.get('others', '') or '（未入力）'}")
 
     st.header("📚 過去の記録（最新5件）")
-    logs = load_logs(user_id)
+    logs = load_logs(user_uuid)
     if logs:
         for log in logs:
             st.markdown(f"📅 {log['date']}")
