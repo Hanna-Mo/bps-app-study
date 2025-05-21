@@ -8,13 +8,13 @@ from openai import OpenAI
 
 
 # -------------------- Supabase 初期化 --------------------
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_URL = st.secrets("SUPABASE_URL")
+SUPABASE_KEY = st.secrets("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # -------------------- OpenAI 初期化 --------------------
 client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=st.secrets("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
 )
 
