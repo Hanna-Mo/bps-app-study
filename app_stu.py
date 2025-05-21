@@ -131,7 +131,7 @@ with st.form("log_form"):
     submitted = st.form_submit_button("記録する")
 
     if submitted and entry:
-        save_log(user_uuid, today, entry)
+        save_log(user_uuid, nickname, today, entry)
         gpt_reply = get_gpt_reply(entry, goals)
         st.markdown(f"> {gpt_reply}")
         st.success("✅ 記録を保存しました！")
