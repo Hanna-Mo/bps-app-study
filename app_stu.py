@@ -80,6 +80,8 @@ def get_gpt_reply(entry, goals):
 # -------------------- Streamlit UI --------------------
 st.set_page_config(page_title="ポジティブ習慣アプリ", page_icon="🌟")
 st.title("🌟ポジティブ習慣アプリ")
+st.write("🔑 API Key (truncated):", st.secrets["OPENROUTER_API_KEY"][:8])
+
 
 nickname = st.text_input("あなたに割り当てられたIDを入力してください")
 if not nickname:
