@@ -37,7 +37,7 @@ def load_goals(user_uuid):
 
 def save_goals(user_uuid, nickname, goals):
     data = {"user_uuid": user_uuid, "nickname": nickname, **goals}
-    existing = supabase.table("goals").select("id").eq("user_uuid", user_uuid).execute()
+    existing = supabase.table("goals").select("nickname").eq("user_uuid", user_uuid).execute()
     if existing.data:
         supabase.table("goals").update(data).eq("user_uuid", user_uuid).execute()
     else:
@@ -87,7 +87,6 @@ if not nickname:
 user_uuid = get_or_create_user_uuid(nickname)
 
 # --- 目標入力 ---
-st.title("🌟 ポジティブ習慣アプリ")
 st.header("🎯 あなたの将来の最も理想的な姿について記入しましょう")
 st.subheader("なるべく具体的に記入しましょう✨\nいくつでも構いません😊 いつでも変更してOKです👌\n\n変更したら忘れずに保存ボタンを押しましょう！")
 goals = load_goals(user_uuid)
