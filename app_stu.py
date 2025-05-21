@@ -153,19 +153,18 @@ with st.form("log_form"):
      #   st.session_state["show_records"] = True
 
 # --- 現在の目標と過去の記録ページ ---
-if st.session_state.get("show_records"):
-    st.subheader("📌 現在の目標")
-    st.markdown(f"- 身体・心理面：{goals.get('body_mind', '') or '（未入力）'}")
-    st.markdown(f"- 学業・仕事：{goals.get('career', '') or '（未入力）'}")
-    st.markdown(f"- 人間関係：{goals.get('relationships', '') or '（未入力）'}")
-    st.markdown(f"- その他：{goals.get('others', '') or '（未入力）'}")
+st.subheader("📌 現在の目標")
+st.markdown(f"- 身体・心理面：{goals.get('body_mind', '') or '（未入力）'}")
+st.markdown(f"- 学業・仕事：{goals.get('career', '') or '（未入力）'}")
+st.markdown(f"- 人間関係：{goals.get('relationships', '') or '（未入力）'}")
+st.markdown(f"- その他：{goals.get('others', '') or '（未入力）'}")
 
-    st.header("📚 過去の記録（最新5件）")
-    logs = load_logs(user_uuid)
-    if logs:
-        for log in logs:
-            st.markdown(f"📅 {log['date']}")
-            st.markdown(f"> {log['entry']}")
-    else:
+st.header("📚 過去の記録（最新5件）")
+logs = load_logs(user_uuid)
+if logs:
+    for log in logs:
+        st.markdown(f"📅 {log['date']}")
+        st.markdown(f"> {log['entry']}")
+else:
         st.info("まだ記録がありません。")
 
