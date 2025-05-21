@@ -117,7 +117,7 @@ today = datetime.date.today().isoformat()
 with st.form("log_form"):
     st.subheader("今日嬉しかったこと、できたこと、達成したことなどを自由に書いてください✨")
     st.caption("例：朝余裕をもって出勤でき、清々しい気持ちがした。友達に偶然出会い、ご飯に行く約束をした。")
-    entry = st.text_area(height=150)
+    entry = st.text_area("", height=150)
     submitted = st.form_submit_button("記録する")
 
     if submitted and entry.strip():
