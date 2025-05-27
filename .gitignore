@@ -6,7 +6,7 @@ __pycache__/
 *.py[cod]
 
 # 環境変数ファイル
-.env
+stu.env
 
 # Streamlit secrets（APIキーなど）
 .streamlit/secrets.toml
